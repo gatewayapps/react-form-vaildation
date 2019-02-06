@@ -1,10 +1,31 @@
 import debounce from 'lodash/debounce'
 import { PureComponent } from 'react'
-import PropTypes from 'prop-types'
 import Validator from 'validator'
 
+export interface IValidationErrors {
+  [field: string]: string[]
+}
+
+export interface FormValidationRenderProps {
+  validationErrors: IValidationErrors
+  isValid: boolean
+  validate: (data?: any) => void
+}
+
+export type ValidationFn = (value: any, ...params: any) => any
+
+export type FormValidationRenderFn = (props: FormValidationRenderProps) => React.ReactChild
+
+export type OnValidatedFn = (isValid: boolean, validationErrors: IValidationErrors) => void
+
 export class FormValidationRule {
-  constructor(field, test, validWhen, message, args) {
+  public field: string
+  public test: string | ValidationFn
+  public validWhen: any
+  public message: string
+  public args?: any[]
+
+  constructor(field: string, test: string | ValidationFn, validWhen: any, message: string, args?: any[]) {
     this.field = field
     this.test = test
     this.validWhen = validWhen
@@ -13,7 +34,21 @@ export class FormValidationRule {
   }
 }
 
-function getValue(data, field) {
+export interface IFormValidationProps {
+  children: FormValidationRenderFn
+  data?: any
+  validateOnMount?: boolean
+  onValidated?: OnValidatedFn
+  validations: FormValidationRule[]
+}
+
+interface IFormValidationState {
+  isValid: boolean
+  validationErrors: IValidationErrors
+  validating: boolean
+}
+
+function getValue(data: any, field: string): any {
   if (!data || !field) {
     return undefined
   }
@@ -26,15 +61,15 @@ function getValue(data, field) {
   }, data)
 }
 
-class FormValidation extends PureComponent {
-  constructor(props) {
-    super(props)
+class FormValidation extends PureComponent<IFormValidationProps, IFormValidationState> {
+  state = {
+    isValid: false,
+    validationErrors: {},
+    validating: false
+  }
 
-    this.state = {
-      isValid: false,
-      validationErrors: {},
-      validating: false
-    }
+  defaultProps = {
+    validateOnMount: true
   }
 
   componentDidMount() {
@@ -43,7 +78,7 @@ class FormValidation extends PureComponent {
     }
   }
 
-  onValidate = debounce(async (data) => {
+  onValidate = debounce(async (data: any): Promise<void> => {
     if (!Array.isArray(this.props.validations) || this.props.validations.length === 0) {
       this.setState({
         validationErrors: {},
@@ -66,7 +101,7 @@ class FormValidation extends PureComponent {
         const args = rule.args || []
         const validWhen = rule.validWhen || false
 
-        let testResult
+        let testResult: any
         try {
           testResult = await testFn(value, ...args)
         } catch (err) {
@@ -103,26 +138,6 @@ class FormValidation extends PureComponent {
       validate: this.onValidate
     })
   }
-}
-
-FormValidation.defaultProps = {
-  validateOnMount: true
-}
-
-FormValidation.propTypes = {
-  children: PropTypes.func.isRequired,
-  data: PropTypes.any,
-  validateOnMount: PropTypes.bool,
-  onValidated: PropTypes.func,
-  validations: PropTypes.arrayOf(
-    PropTypes.shape({
-      field: PropTypes.string.isRequired,
-      test: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
-      args: PropTypes.array,
-      validWhen: PropTypes.any,
-      message: PropTypes.string.isRequired
-    })
-  )
 }
 
 export default FormValidation

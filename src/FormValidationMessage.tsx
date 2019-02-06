@@ -1,7 +1,11 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
-const FormValidationMessage = (props) => {
+interface IFormValidationMessageProps {
+  id: string
+  validationErrors?: string[]
+}
+
+const FormValidationMessage = (props: IFormValidationMessageProps): JSX.Element | null => {
   if (!props.validationErrors || props.validationErrors.length === 0) {
     return null
   }
@@ -13,11 +17,6 @@ const FormValidationMessage = (props) => {
       ))}
     </small>
   )
-}
-
-FormValidationMessage.propTypes = {
-  id: PropTypes.string.isRequired,
-  validationErrors: PropTypes.arrayOf(PropTypes.string)
 }
 
 export default FormValidationMessage

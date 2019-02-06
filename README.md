@@ -1,4 +1,4 @@
-# react-form-vaildation
+# react-form-validation
 
 React components for validating field data and providing visual feedback to users
 

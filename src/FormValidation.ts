@@ -68,7 +68,7 @@ class FormValidation extends PureComponent<IFormValidationProps, IFormValidation
     validating: false
   }
 
-  defaultProps = {
+  static defaultProps = {
     validateOnMount: true
   }
 

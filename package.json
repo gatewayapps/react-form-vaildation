@@ -19,7 +19,7 @@
   },
   "main": "dist/index.js",
   "scripts": {
-    "build": "SET NODE_ENV=production && tsc",
+    "build": "cross-env NODE_ENV=production tsc",
     "clean": "rm -Rf ./dist",
     "prepublish": "npm run clean && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -44,6 +44,7 @@
     "@types/validator": "^10.9.0",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.4",
+    "cross-env": "^5.2.0",
     "css-loader": "^2.1.0",
     "node-sass": "^4.11.0",
     "prettier": "^1.16.4",

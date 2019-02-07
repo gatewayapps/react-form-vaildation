@@ -1,16 +1,15 @@
 import React, { Component } from 'react'
 import { storiesOf } from '@storybook/react'
-import FormValidation, { FormValidationRule } from '../src/FormValidation'
-import FormValidationMessage from '../src/FormValidationMessage'
-
+import { FormValidation, FormValidationRule, FormValidationMessage } from '../src'
 import './styles.scss'
 
-class FormValidationComboBox extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      selectedValue: '-1'
-    }
+interface IFormValidationComboBoxState {
+  selectedValue: string
+}
+
+class FormValidationComboBox extends Component<{}, IFormValidationComboBoxState> {
+  state = {
+    selectedValue: '-1'
   }
 
   render() {
@@ -43,7 +42,11 @@ class FormValidationComboBox extends Component {
   }
 }
 
-class FormValidationInput extends Component {
+interface IFormValidationInputState {
+  name: string
+}
+
+class FormValidationInput extends Component<{}, IFormValidationInputState> {
   constructor(props) {
     super(props)
     this.state = {

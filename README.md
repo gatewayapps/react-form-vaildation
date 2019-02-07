@@ -6,6 +6,10 @@ React components for validating field data and providing visual feedback to user
 
 `npm install @gatewayapps/react-form-validation`
 
+### Using Typescript
+
+No need to install a separate `@types/...` package for react-form-validation. The package is written in Typescript and the type definitions as included in with package published to npm.
+
 ## Usage
 
 The main pieces are the `FormValidation` component and `FormValidationRule` class. These items do the heavy lifting of making sure your field data is valid according to your rules. Below is a simple example of both being used:
@@ -89,17 +93,17 @@ The `FormValidationRule` class is what the `FormValidation` component uses to ve
 
 ```
 <FormValidation validations={validators} data={this.state} onValidated={(isValid) => console.log('valid?', isValid)}>
-        {({ validate, validationErrors }) => (
+        {({ isValid, validate, validationErrors }) => (
           return ...
         )}
 </FormValidation>
 ```
 
-The `FormValidation` component is a render prop that wraps other components. It provides a `validate` method and a `validationErrors` object that can be used inside the render prop. The definition of the component is as follows:
+The `FormValidation` component is a render prop that wraps other components. It provides an `isValid` boolean, `validate` method and a `validationErrors` object that can be used inside the render prop. The definition of the component is as follows:
 
 - **validations**: This property accepts an array of `FormValidationRule` instances
 - **data**: This property accepts a React state
-- **onValidated(optional)**: Provides a boolean value determining whether the data is valid or not according to the rules specified
+- **onValidated(optional)**: Provides a boolean value determining whether the data is valid or not according to the rules specified and a list of validation errors `(isValid: boolean, validationErrors: IValidationErrors) => void`
 - **validate**: This function is returned and available to the children of `FormValidation`. Calling this function kicks off the validation according to the rules specified.
 - **validationErrors**: This is a dictionary containing the prop name and the validation message for any fields that did not pass validation according to the rules specified.
 

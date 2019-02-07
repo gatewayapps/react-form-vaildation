@@ -1,6 +1,13 @@
 import debounce from 'lodash/debounce'
 import { PureComponent } from 'react'
 import Validator from 'validator'
+import { FormValidationRule } from './FormValidationRule'
+
+export type FormValidationRenderFn = (props: FormValidationRenderProps) => React.ReactChild
+
+export type OnValidatedFn = (isValid: boolean, validationErrors: IValidationErrors) => void
+
+export type ValidateFn = (data?: any) => void
 
 export interface IValidationErrors {
   [field: string]: string[]
@@ -9,29 +16,7 @@ export interface IValidationErrors {
 export interface FormValidationRenderProps {
   validationErrors: IValidationErrors
   isValid: boolean
-  validate: (data?: any) => void
-}
-
-export type ValidationFn = (value: any, ...params: any) => any
-
-export type FormValidationRenderFn = (props: FormValidationRenderProps) => React.ReactChild
-
-export type OnValidatedFn = (isValid: boolean, validationErrors: IValidationErrors) => void
-
-export class FormValidationRule {
-  public field: string
-  public test: string | ValidationFn
-  public validWhen: any
-  public message: string
-  public args?: any[]
-
-  constructor(field: string, test: string | ValidationFn, validWhen: any, message: string, args?: any[]) {
-    this.field = field
-    this.test = test
-    this.validWhen = validWhen
-    this.message = message
-    this.args = args
-  }
+  validate: ValidateFn
 }
 
 export interface IFormValidationProps {
@@ -61,7 +46,7 @@ function getValue(data: any, field: string): any {
   }, data)
 }
 
-class FormValidation extends PureComponent<IFormValidationProps, IFormValidationState> {
+export class FormValidation extends PureComponent<IFormValidationProps, IFormValidationState> {
   state = {
     isValid: false,
     validationErrors: {},
@@ -139,5 +124,3 @@ class FormValidation extends PureComponent<IFormValidationProps, IFormValidation
     })
   }
 }
-
-export default FormValidation

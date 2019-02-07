@@ -1,4 +1,3 @@
-import FormValidation, { FormValidationRule } from './FormValidation'
-import FormValidationMessage from './FormValidationMessage'
-
-export { FormValidation, FormValidationMessage, FormValidationRule }
+export * from './FormValidation'
+export * from './FormValidationMessage'
+export * from './FormValidationRule'

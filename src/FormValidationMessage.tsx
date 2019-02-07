@@ -1,11 +1,11 @@
 import React from 'react'
 
-interface IFormValidationMessageProps {
+export interface IFormValidationMessageProps {
   id: string
   validationErrors?: string[]
 }
 
-const FormValidationMessage = (props: IFormValidationMessageProps): JSX.Element | null => {
+export const FormValidationMessage = (props: IFormValidationMessageProps): JSX.Element | null => {
   if (!props.validationErrors || props.validationErrors.length === 0) {
     return null
   }
@@ -18,5 +18,3 @@ const FormValidationMessage = (props: IFormValidationMessageProps): JSX.Element 
     </small>
   )
 }
-
-export default FormValidationMessage

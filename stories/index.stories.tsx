@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { storiesOf } from '@storybook/react'
-import FormValidation, { FormValidationRule } from '../src/FormValidation'
-import FormValidationMessage from '../src/FormValidationMessage'
+import { FormValidation, FormValidationRule, FormValidationMessage } from '../src'
 import './styles.scss'
 
 interface IFormValidationComboBoxState {
